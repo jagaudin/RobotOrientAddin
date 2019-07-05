@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29020.237
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RobotOrientAddIn", "RobotOrientAddIn\RobotOrientAddIn.csproj", "{2F2AF0BA-2EAC-4118-88B9-BF512D066C49}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DebugRobotAddIn", "DebugRobotAddIn\DebugRobotAddIn.csproj", "{8029B11B-BCB4-4E22-AEE2-837AAB8AD02A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2F2AF0BA-2EAC-4118-88B9-BF512D066C49}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F2AF0BA-2EAC-4118-88B9-BF512D066C49}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F2AF0BA-2EAC-4118-88B9-BF512D066C49}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F2AF0BA-2EAC-4118-88B9-BF512D066C49}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8029B11B-BCB4-4E22-AEE2-837AAB8AD02A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8029B11B-BCB4-4E22-AEE2-837AAB8AD02A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8029B11B-BCB4-4E22-AEE2-837AAB8AD02A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8029B11B-BCB4-4E22-AEE2-837AAB8AD02A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {71688BFC-3D7B-4126-9A13-F5F67CAD8DDD}
+	EndGlobalSection
+EndGlobal
