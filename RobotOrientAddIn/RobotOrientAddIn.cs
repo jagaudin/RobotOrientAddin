@@ -70,7 +70,6 @@ namespace RobotOrientAddIn
                 points[i] = new Point3D(node.X, node.Y, node.Z);
             }
 
-            Dictionary<int, List<Vector3D>> ucd = new Dictionary<int, List<Vector3D>>();
             // Create 3D vectors for each bar and index of bars connected to a node
             var vectors = new Dictionary<int, Vector3D>();
             var vect_by_pt = new DefaultDict<int, List<Vector3D>>();
@@ -90,6 +89,7 @@ namespace RobotOrientAddIn
                 Vector3D u = vector.Value;
                 UnitVector3D u_norm = u.Normalize();
                 int start = bars.Get(vector.Key).StartNode;
+                // TODO: How about the other end?
 
                 // Find the most orthogonal vector `v`
                 Vector3D most_orth_v = u;
@@ -130,25 +130,8 @@ namespace RobotOrientAddIn
                 // Set `Gamma` attribute of bar
                 IRobotBar bar = bars.Get(vector.Key);
                 bar.Gamma = gamma_up;
+            }
 
-                var LCS = new List<Vector3D>
-                {
-                    u,
-                    c.ToVector3D(),
-                    d.ToVector3D()
-                };
-                ucd[vector.Key] = LCS;
-            }
-            string s = "";
-            for (int i =1; i <= bars.Count; i++)
-            {
-                var bar = (IRobotBar)bars.Get(i);
-                RobotGeoPoint3D _x = null, _y = null, _z = null;
-                bar.GetLCS(_x, _y, _z);
-                s += _x.ToString() + " " + _y.ToString() + " " + _z.ToString() + "\n\r";
-                s += ucd[i].ToString() + "\n\r";
-            }
-            System.Windows.Forms.MessageBox.Show(s);
             // Redraw all views
             robot_app.Project.ViewMngr.Refresh();
         }
