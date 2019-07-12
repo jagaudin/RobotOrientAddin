@@ -7,8 +7,7 @@ using RobotOM;
 
 namespace RobotOrientAddIn
 {
-    [System.Runtime.InteropServices.ComVisibleAttribute(true), System.Runtime.InteropServices.Guid("0588E2AC-5F9E-49EF-9BD9-671B01CD8BE1")]
-
+    [System.Runtime.InteropServices.ComVisibleAttribute(false), System.Runtime.InteropServices.Guid("0588E2AC-5F9E-49EF-9BD9-671B01CD8BE1")]
     public class DefaultDict<TKey, TValue>: Dictionary<TKey, TValue> where TValue: new()
     {
         public new TValue this[TKey key]
@@ -25,8 +24,8 @@ namespace RobotOrientAddIn
             set { base[key] = value; }
         }
     }
-    
 
+    [System.Runtime.InteropServices.ComVisibleAttribute(true), System.Runtime.InteropServices.Guid("2547EE18-E1EA-4AC9-88A3-E935D95BFF41")]
     public class RobotOrientAddIn: IRobotAddIn
     {
 
