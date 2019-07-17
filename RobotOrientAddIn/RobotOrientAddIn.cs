@@ -56,38 +56,59 @@ namespace RobotOrientAddIn
         public void DoCommand(int cmd_id)
         {
             IRobotStructure structure = robot_app.Project.Structure;
+            // Get the current bar selection, if none selected, work on all bars
+            var bar_selection = structure.Selections.Get(IRobotObjectType.I_OT_BAR);
+            if (bar_selection.Count == 0)
+                bar_selection = structure.Selections.CreateFull(IRobotObjectType.I_OT_BAR);
 
-            // Get bars and nodes
-            IRobotCollection bars = structure.Bars.GetAll();
+            // Get nodes as IRobotCollection
             IRobotCollection nodes = structure.Nodes.GetAll();
 
             // Create 3D points at nodes
             var points = new Dictionary<int, Point3D>();
-            for (int i = 1; i <= nodes.Count; i++)
-            {
-                var node = (IRobotNode)nodes.Get(i);
-                points[i] = new Point3D(node.X, node.Y, node.Z);
-            }
-
             // Create 3D vectors for each bar and index of bars connected to a node
             var vectors = new Dictionary<int, Vector3D>();
             var vect_by_pt = new DefaultDict<int, List<Vector3D>>();
-            for (int i = 1; i <= bars.Count; i++)
-            {
-                var bar = (IRobotBar)bars.Get(i);
-                var start_pt = points[bar.StartNode];
-                var end_pt = points[bar.EndNode];
-                vectors[i] = end_pt - start_pt;
-                vect_by_pt[bar.StartNode].Add(vectors[i]);
-                vect_by_pt[bar.EndNode].Add(vectors[i]);
-            };
 
-            foreach (KeyValuePair<int, Vector3D> vector in vectors)
+            for (int i = 1; i <= nodes.Count; i++)
             {
+                var node = (IRobotNode)nodes.Get(i);
+                var connected_bars = structure.Nodes.GetConnectedBars(node.Number.ToString());
+                for (int j = 1; j <= connected_bars.Count; j++)
+                {
+                    var bar_number = connected_bars.Get(j);
+                    // Check if the bar has NOT been recorded yet
+                    if (!vectors.ContainsKey(bar_number))
+                    {
+                        var bar = (IRobotBar)structure.Bars.Get(bar_number);
+                        // Check if any extremity of connected bar has NOT been recorded
+                        foreach (int end_node_num in new List<int> { bar.StartNode, bar.EndNode }) {
+                            if (!points.ContainsKey(end_node_num))
+                            {
+                                var end_node = (IRobotNode)structure.Nodes.Get(end_node_num);
+                                points[end_node_num] = new Point3D(end_node.X, end_node.Y, end_node.Z);
+                            }
+                        }
+
+                        vectors[bar.Number] = points[bar.EndNode] - points[bar.StartNode];
+                    }
+                    vect_by_pt[node.Number].Add(vectors[bar_number]);
+                }
+            }
+
+            // Iterate over selected bars
+            for (int i = 1; i <= bar_selection.Count; i++)
+            {
+                var bar_number = bar_selection.Get(i);
                 // `u` is the vector corresponding to the bar
-                Vector3D u = vector.Value;
+                Vector3D u = vectors[bar_number];
                 UnitVector3D u_norm = u.Normalize();
-                int start = bars.Get(vector.Key).StartNode;
+
+                if (u_norm.IsParallelTo(UnitVector3D.ZAxis))
+                    continue;
+
+                var bar = (IRobotBar)structure.Bars.Get(bar_number);
+                int start = bar.StartNode; 
                 // TODO: How about the other end?
 
                 // Find the most orthogonal vector `v`
@@ -107,11 +128,9 @@ namespace RobotOrientAddIn
                 if (cur_min > 0.95) continue;
 
                 var v = most_orth_v;
-                var v_norm = v.Normalize();
 
                 // Vector `a` is vector a orthogonal to `u` in (u,v) plane
                 Vector3D a = v - u_norm.DotProduct(v) * u;
-                UnitVector3D a_norm = a.Normalize();
 
                 // Vector `c` is orthogonal to `u` in the global (X,Y) plane
                 UnitVector3D c = u_norm.CrossProduct(UnitVector3D.ZAxis);
@@ -127,7 +146,6 @@ namespace RobotOrientAddIn
                 double gamma_up = (gamma.Degrees < 0) ? gamma.Degrees + 90 : gamma.Degrees - 90;
 
                 // Set `Gamma` attribute of bar
-                IRobotBar bar = bars.Get(vector.Key);
                 bar.Gamma = gamma_up;
             }
 

@@ -35,7 +35,8 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <Win32Resource>C:\Users\jacques.gaudin\source\repos\RobotOrientAddIn\RobotOrientAddIn\bin\Debug\RobotOrientAddIn.res</Win32Resource>
+    <Win32Resource>
+    </Win32Resource>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="MathNet.Spatial, Version=0.4.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -71,8 +72,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="RobotAddInDLL.rc" />
     <Content Include="post-build events.txt" />
+    <Content Include="RobotOrientAddIn.rc" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

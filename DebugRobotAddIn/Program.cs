@@ -12,7 +12,7 @@ namespace DebugRobotAddIn
     {
         static void Main()
         {
-            string filename = "V:\\1979\\Analysis\\Robot\\Curved glass\\190617 wireframe model\\wireframe_model vQ.rtd";
+            string filename = "V:\\2003\\Analysis\\Robot\\cloud\\190716 wireframe models\\EXT LEFT 0 EXT RIGHT 0 ROTATION 0 vA.rtd";
 
             var add_in = new RobotOrientAddIn.RobotOrientAddIn();
             var robot_app = new RobotApplication
