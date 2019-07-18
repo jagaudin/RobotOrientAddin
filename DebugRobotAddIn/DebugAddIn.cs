@@ -8,7 +8,7 @@ using RobotOM;
 
 namespace DebugRobotAddIn
 {
-    class Program
+    class DebugAddIn
     {
         static void Main()
         {
