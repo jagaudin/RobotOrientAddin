@@ -55,11 +55,19 @@ namespace RobotOrientAddIn
 
         public void DoCommand(int cmd_id)
         {
+            OrientBars();
+        }
+
+        public void OrientBars(IRobotSelection bar_selection=null)
+        {
             IRobotStructure structure = robot_app.Project.Structure;
-            // Get the current bar selection, if none selected, work on all bars
-            var bar_selection = structure.Selections.Get(IRobotObjectType.I_OT_BAR);
-            if (bar_selection.Count == 0)
-                bar_selection = structure.Selections.CreateFull(IRobotObjectType.I_OT_BAR);
+            // If no parameter, get the current bar selection, if none selected, work on all bars
+            if (bar_selection != null)
+            {
+                bar_selection = structure.Selections.Get(IRobotObjectType.I_OT_BAR);
+                if (bar_selection.Count == 0)
+                    bar_selection = structure.Selections.CreateFull(IRobotObjectType.I_OT_BAR);
+            }
             
             // Get nodes as IRobotCollection
             //IRobotCollection nodes = structure.Nodes.GetAll();
